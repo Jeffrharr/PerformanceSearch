@@ -89,6 +89,9 @@ public static class SearchFixMod
     {
         static bool Prefix(QuickSearchFilter __instance, ref bool __result)
         {
+            if (!PerformanceSearchSettings.SearchDebounceEnabled)
+                return true;
+
             if (!States.TryGetValue(__instance, out var state))
                 return true;
 

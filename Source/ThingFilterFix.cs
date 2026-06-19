@@ -32,7 +32,7 @@ static class ThingFilter_RecalculateDisplayRootCategory_Patch
 
     static void Prefix(ThingFilter __instance, ref bool __runOriginal)
     {
-        if (ThingFilterFixSettings.AlwaysUseRootCategory)
+        if (PerformanceSearchSettings.AlwaysUseRootCategory)
         {
             DisplayRootCategoryIntField.SetValue(__instance, ThingCategoryNodeDatabase.RootNode);
             __runOriginal = false;

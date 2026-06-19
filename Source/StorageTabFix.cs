@@ -64,6 +64,7 @@ static class StorageTabFix
         static void Postfix(ref IEnumerable<Bill> __result)
         {
             if (!s_inFillTab) return;
+            if (!PerformanceSearchSettings.StorageGlobalBillsCacheEnabled) return;
 
             if (s_cachedBills != null && !FilterDirtyThisFrame)
             {

@@ -32,17 +32,22 @@ static class ThingFilter_RecalculateDisplayRootCategory_Patch
 
     static void Prefix(ThingFilter __instance, ref bool __runOriginal)
     {
-        if (PerformanceSearchSettings.AlwaysUseRootCategory)
+        switch (PerformanceSearchSettings.FilterDisplayRootMode)
         {
-            DisplayRootCategoryIntField.SetValue(__instance, ThingCategoryNodeDatabase.RootNode);
-            __runOriginal = false;
-            return;
-        }
+            case DisplayRootMode.Vanilla:
+                return; // let the original run unmodified
 
-        var allowedDefs = (HashSet<ThingDef>)AllowedDefsField.GetValue(__instance);
-        var result = FindDisplayRoot(__instance, allowedDefs);
-        DisplayRootCategoryIntField.SetValue(__instance, result);
-        __runOriginal = false;
+            case DisplayRootMode.AlwaysRoot:
+                DisplayRootCategoryIntField.SetValue(__instance, ThingCategoryNodeDatabase.RootNode);
+                __runOriginal = false;
+                return;
+
+            default: // DisplayRootMode.Lca
+                var allowedDefs = (HashSet<ThingDef>)AllowedDefsField.GetValue(__instance);
+                DisplayRootCategoryIntField.SetValue(__instance, FindDisplayRoot(__instance, allowedDefs));
+                __runOriginal = false;
+                return;
+        }
     }
 
     private static TreeNode_ThingCategory FindDisplayRoot(

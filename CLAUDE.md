@@ -1,5 +1,13 @@
 # PerformanceSearch
 
+## Settings
+
+Every performance optimization must have a toggle in Mod Settings so players can
+revert to vanilla behaviour if needed. Each option label should be concise and include
+a brief tooltip describing the expected performance impact (e.g. "eliminates input lag
+on large mod lists"). Storage filter display root options are mutually exclusive and
+must be presented as radio buttons, not checkboxes.
+
 ## Harmony patches
 
 Prefer Prefix/Postfix patches over Transpilers. Transpilers operate on IL directly,

@@ -9,16 +9,19 @@ namespace SearchFix.Tests;
 [TestFixture]
 public class ApiCompatibilityTests
 {
-    private const string DllPath =
+    private const string FallbackDllPath =
         "/home/deck/.local/share/Steam/steamapps/common/RimWorld/RimWorldLinux_Data/Managed/Assembly-CSharp.dll";
+
+    private static string DllPath =>
+        Environment.GetEnvironmentVariable("RIMWORLD_ASSEMBLY") ?? FallbackDllPath;
 
     private ModuleDefinition _module = null!;
 
     [OneTimeSetUp]
     public void LoadAssembly()
     {
-        Assert.That(File.Exists(DllPath), Is.True,
-            $"Assembly-CSharp.dll not found at {DllPath}");
+        if (!File.Exists(DllPath))
+            Assert.Ignore($"Assembly-CSharp.dll not found at {DllPath} — set RIMWORLD_ASSEMBLY to run these tests.");
         _module = ModuleDefinition.ReadModule(DllPath);
     }
 

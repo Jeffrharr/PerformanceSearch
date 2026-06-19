@@ -6,7 +6,9 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Debounces RimWorld's quick search widgets to eliminate input latency when filtering large item lists.</description>
+  <description>Targeted performance fixes for common GUI slowdowns in heavily modded games.
+
+- Search boxes: typing in any search box (bills, ingredients, storage filters) used to stutter on large mod lists because the game rebuilt the entire item list on every keystroke. Now the list stays visible while you type and updates once you pause — no lag, no flicker.</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>

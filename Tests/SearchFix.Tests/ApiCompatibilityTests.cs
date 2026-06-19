@@ -107,6 +107,81 @@ public class ApiCompatibilityTests
             "QuickSearchWidget.filter (QuickSearchFilter) field no longer exists");
     }
 
+    // --- ITab_Storage / BillUtility (StorageTabFix) ---
+
+    [Test]
+    public void ITab_Storage_TypeExists()
+    {
+        Assert.That(GetType("RimWorld.ITab_Storage"), Is.Not.Null,
+            "RimWorld.ITab_Storage no longer exists");
+    }
+
+    [Test]
+    public void ITab_Storage_FillTab_Exists()
+    {
+        var type = GetType("RimWorld.ITab_Storage");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m => m.Name == "FillTab");
+        Assert.That(method, Is.Not.Null,
+            "ITab_Storage.FillTab no longer exists — storage tab transpiler will fail");
+    }
+
+    [Test]
+    public void BillUtility_GlobalBills_Exists()
+    {
+        var type = GetType("RimWorld.BillUtility");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m => m.Name == "GlobalBills");
+        Assert.That(method, Is.Not.Null,
+            "BillUtility.GlobalBills no longer exists — storage tab transpiler will fail");
+    }
+
+    [Test]
+    public void ThingFilterUI_DoThingFilterConfigWindow_Exists()
+    {
+        var type = GetType("Verse.ThingFilterUI");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m => m.Name == "DoThingFilterConfigWindow");
+        Assert.That(method, Is.Not.Null,
+            "ThingFilterUI.DoThingFilterConfigWindow no longer exists — storage tab transpiler will fail");
+    }
+
+    [Test]
+    public void ThingFilter_SetAllow_ThingDef_Exists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m =>
+            m.Name == "SetAllow" &&
+            m.Parameters.Count == 2 &&
+            m.Parameters[0].ParameterType.FullName == "Verse.ThingDef");
+        Assert.That(method, Is.Not.Null,
+            "ThingFilter.SetAllow(ThingDef, bool) no longer exists");
+    }
+
+    [Test]
+    public void ThingFilter_SetAllow_SpecialThingFilterDef_Exists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m =>
+            m.Name == "SetAllow" &&
+            m.Parameters.Count == 2 &&
+            m.Parameters[0].ParameterType.FullName == "Verse.SpecialThingFilterDef");
+        Assert.That(method, Is.Not.Null,
+            "ThingFilter.SetAllow(SpecialThingFilterDef, bool) no longer exists");
+    }
+
+    [Test]
+    public void ThingFilter_SetDisallowAll_Exists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m => m.Name == "SetDisallowAll");
+        Assert.That(method, Is.Not.Null,
+            "ThingFilter.SetDisallowAll no longer exists");
+    }
+
     // --- helpers ---
 
     private TypeDefinition? GetType(string fullName) =>

@@ -49,9 +49,15 @@ The test suite uses `Mono.Cecil` to verify that the RimWorld types and methods t
 ./test.ps1       # Windows
 ```
 
-A test failure means a patched method was renamed or removed in the update and the mod needs attention before it is safe to load.
+The tests inspect `Assembly-CSharp.dll` directly — no running game needed. They look for the DLL at the default Steam path automatically. If your install is elsewhere, set `RIMWORLD_ASSEMBLY`:
 
-Tests do **not** require a running game — they inspect the DLL directly.
+```bash
+RIMWORLD_ASSEMBLY=/path/to/Assembly-CSharp.dll ./test.sh
+```
+
+If the DLL is not found the tests are **skipped**, not failed. This is intentional — CI has no game installed, so the suite still passes there while remaining meaningful locally.
+
+A test failure (not a skip) means a patched method was renamed or removed in a RimWorld update and the mod needs attention before it is safe to load.
 
 ## Contributing
 

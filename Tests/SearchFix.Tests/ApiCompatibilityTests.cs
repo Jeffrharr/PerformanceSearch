@@ -110,20 +110,13 @@ public class ApiCompatibilityTests
     // --- ITab_Storage / BillUtility (StorageTabFix) ---
 
     [Test]
-    public void ITab_Storage_TypeExists()
-    {
-        Assert.That(GetType("RimWorld.ITab_Storage"), Is.Not.Null,
-            "RimWorld.ITab_Storage no longer exists");
-    }
-
-    [Test]
     public void ITab_Storage_FillTab_Exists()
     {
         var type = GetType("RimWorld.ITab_Storage");
         Assert.That(type, Is.Not.Null);
         var method = type!.Methods.SingleOrDefault(m => m.Name == "FillTab");
         Assert.That(method, Is.Not.Null,
-            "ITab_Storage.FillTab no longer exists — storage tab transpiler will fail");
+            "ITab_Storage.FillTab no longer exists — storage tab patch will fail");
     }
 
     [Test]
@@ -133,17 +126,7 @@ public class ApiCompatibilityTests
         Assert.That(type, Is.Not.Null);
         var method = type!.Methods.SingleOrDefault(m => m.Name == "GlobalBills");
         Assert.That(method, Is.Not.Null,
-            "BillUtility.GlobalBills no longer exists — storage tab transpiler will fail");
-    }
-
-    [Test]
-    public void ThingFilterUI_DoThingFilterConfigWindow_Exists()
-    {
-        var type = GetType("Verse.ThingFilterUI");
-        Assert.That(type, Is.Not.Null);
-        var method = type!.Methods.SingleOrDefault(m => m.Name == "DoThingFilterConfigWindow");
-        Assert.That(method, Is.Not.Null,
-            "ThingFilterUI.DoThingFilterConfigWindow no longer exists — storage tab transpiler will fail");
+            "BillUtility.GlobalBills no longer exists — storage tab cache patch will fail");
     }
 
     [Test]
@@ -180,6 +163,59 @@ public class ApiCompatibilityTests
         var method = type!.Methods.SingleOrDefault(m => m.Name == "SetDisallowAll");
         Assert.That(method, Is.Not.Null,
             "ThingFilter.SetDisallowAll no longer exists");
+    }
+
+    // --- ThingFilter (display root LCA patch) ---
+
+    [Test]
+    public void ThingFilter_RecalculateDisplayRootCategory_Exists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var method = type!.Methods.SingleOrDefault(m =>
+            m.Name == "RecalculateDisplayRootCategory" && m.Parameters.Count == 0);
+        Assert.That(method, Is.Not.Null,
+            "ThingFilter.RecalculateDisplayRootCategory() no longer exists — LCA patch will not fire");
+    }
+
+    [Test]
+    public void ThingFilter_AllowedDefs_FieldExists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var field = type!.Fields.SingleOrDefault(f => f.Name == "allowedDefs");
+        Assert.That(field, Is.Not.Null,
+            "ThingFilter.allowedDefs private field no longer exists — LCA patch cannot read allowed defs");
+    }
+
+    [Test]
+    public void ThingFilter_DisplayRootCategoryInt_FieldExists()
+    {
+        var type = GetType("Verse.ThingFilter");
+        Assert.That(type, Is.Not.Null);
+        var field = type!.Fields.SingleOrDefault(f => f.Name == "displayRootCategoryInt");
+        Assert.That(field, Is.Not.Null,
+            "ThingFilter.displayRootCategoryInt private field no longer exists — LCA patch cannot set result");
+    }
+
+    [Test]
+    public void ThingCategoryDef_Parent_FieldExists()
+    {
+        var type = GetType("Verse.ThingCategoryDef");
+        Assert.That(type, Is.Not.Null);
+        var field = type!.Fields.SingleOrDefault(f => f.Name == "parent");
+        Assert.That(field, Is.Not.Null,
+            "ThingCategoryDef.parent field no longer exists — LCA ancestor walk-up will break");
+    }
+
+    [Test]
+    public void ThingDef_ThingCategories_FieldExists()
+    {
+        var type = GetType("Verse.ThingDef");
+        Assert.That(type, Is.Not.Null);
+        var field = type!.Fields.SingleOrDefault(f => f.Name == "thingCategories");
+        Assert.That(field, Is.Not.Null,
+            "ThingDef.thingCategories field no longer exists — LCA cannot find def's leaf categories");
     }
 
     // --- helpers ---

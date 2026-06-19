@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>PerformanceSearch</name>
+  <name>Performance Search</name>
+  <modClass>PerformanceSearch.PerformanceSearchMod</modClass>
   <author>Joof</author>
   <packageId>joof.performancesearch</packageId>
   <supportedVersions>

@@ -7,4 +7,14 @@
     <li>1.6</li>
   </supportedVersions>
   <description>Debounces RimWorld's quick search widgets to eliminate input latency when filtering large item lists.</description>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Ideology</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+    <li>Ludeon.RimWorld.Anomaly</li>
+    <li>brrainz.harmony</li>
+    <!-- Load after any mod that also patches QuickSearchFilter so our debounce wraps theirs -->
+    <li>porquepine.performance_fish</li>
+  </loadAfter>
 </ModMetaData>

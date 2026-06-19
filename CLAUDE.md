@@ -1,5 +1,11 @@
 # PerformanceSearch
 
+## Harmony patches
+
+Prefer Prefix/Postfix patches over Transpilers. Transpilers operate on IL directly,
+break silently when Ludeon reshuffles method bodies, and are hard to read and maintain.
+Use a Transpiler only when no Prefix/Postfix combination can achieve the same result.
+
 ## About.xml description
 
 The description must stay in sync with what is actually merged to master — do not

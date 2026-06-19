@@ -7,6 +7,7 @@ namespace SearchFix.Tests;
 /// Run these after every RimWorld update. Failures mean the mod needs updating.
 /// </summary>
 [TestFixture]
+[Category("RequiresGameDll")]
 public class ApiCompatibilityTests
 {
     private const string FallbackDllPath =

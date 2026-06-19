@@ -1,0 +1,14 @@
+#!/bin/bash
+set -e
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+CHECKER="/home/deck/Developer/RimWorldMods/HarmonyConflictChecker/CLI/bin/Release/net8.0/harmony-check.dll"
+
+# Build first so the DLL under test is current
+"$REPO_ROOT/build.sh"
+
+# Lint the mod for patch quality issues
+/home/deck/.dotnet/dotnet "$CHECKER" lint "$REPO_ROOT"
+
+# API compatibility tests — verify patched RimWorld methods still exist
+"$REPO_ROOT/test.sh"

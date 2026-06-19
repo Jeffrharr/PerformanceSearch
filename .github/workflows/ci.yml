@@ -23,7 +23,6 @@ jobs:
         # Krafs.Rimworld.Ref package provides the RimWorld assemblies, so this may be a no-op.
 
       - name: Test
-        # API compatibility tests require Assembly-CSharp.dll from a local RimWorld install.
-        # Without RIMWORLD_ASSEMBLY set they are skipped (not failed) so CI still passes.
-        # To run them locally: ./test.sh (picks up the Steam path automatically).
-        run: dotnet test Tests/SearchFix.Tests/SearchFix.Tests.csproj
+        # RequiresGameDll tests need Assembly-CSharp.dll and are excluded from CI.
+        # Run ./test.sh locally to execute the full suite including those tests.
+        run: dotnet test Tests/SearchFix.Tests/SearchFix.Tests.csproj --filter "Category!=RequiresGameDll"

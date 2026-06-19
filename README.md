@@ -59,6 +59,16 @@ If the DLL is not found the tests are **skipped**, not failed. This is intention
 
 A test failure (not a skip) means a patched method was renamed or removed in a RimWorld update and the mod needs attention before it is safe to load.
 
+## Setup (one-time)
+
+After cloning, tell git to use the checked-in hooks:
+
+```bash
+git config core.hooksPath hooks
+```
+
+This wires up the pre-commit hook which runs build → lint → API compat tests before every commit.
+
 ## Contributing
 
 All changes go through a PR. Direct pushes to `master` are blocked.

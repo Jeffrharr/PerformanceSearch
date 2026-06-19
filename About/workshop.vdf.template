@@ -4,13 +4,13 @@
 
 	// After your first manual in-game upload, paste the Workshop item ID here
 	// and commit it. Subsequent CI runs will update the same listing.
-	"publishedfileid"	"0"
+	"publishedfileid"	"3747961217"
 
 	"contentfolder"		"CONTENT_FOLDER"
 	"previewfile"		"CONTENT_FOLDER/About/Preview.png"
 
 	"visibility"		"0"
-	"title"			"PerformanceSearch"
+	"title"			"Performance Search"
 	"description"		"Debounces RimWorld's quick search widgets to eliminate input latency when filtering large item lists."
 	"changenote"		"CHANGE_NOTE"
 }

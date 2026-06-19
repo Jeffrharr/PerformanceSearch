@@ -6,7 +6,11 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>Debounces RimWorld's quick search widgets to eliminate input latency when filtering large item lists.</description>
+  <description>Targeted performance fixes for common GUI bottlenecks in heavily modded games.
+
+Search debouncing: RimWorld's quick search widgets rebuild their full filter tree on every keystroke. With many mods installed this causes visible input lag while typing. This mod debounces the filter so all items stay visible for 150ms after a keystroke, then snaps to the filtered result once you pause — no lag, no flicker.
+
+Storage tab: the storage inspector calls BillUtility.GlobalBills() twice every frame while the tab is open to detect bills that lost output eligibility after a filter change. On large saves with many production benches this is expensive. This mod skips the second scan on frames where the filter was not changed, which is nearly every frame.</description>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
     <li>Ludeon.RimWorld.Royalty</li>

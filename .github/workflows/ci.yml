@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: |
+          FrameworkPathOverride=/usr/lib/mono/4.8-api dotnet build Source/SearchFix.csproj -c Release
+        # FrameworkPathOverride is only needed locally on Steam Deck. On ubuntu-latest the
+        # Krafs.Rimworld.Ref package provides the RimWorld assemblies, so this may be a no-op.
+
+      - name: Test
+        run: dotnet test Tests/SearchFix.Tests/SearchFix.Tests.csproj

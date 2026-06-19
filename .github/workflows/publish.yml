@@ -1,0 +1,53 @@
+name: Publish to Steam Workshop
+
+on:
+  workflow_dispatch:
+    inputs:
+      change_note:
+        description: 'Change note shown on the Workshop listing'
+        required: true
+        default: 'Bug fixes and improvements'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build
+        run: dotnet build Source/SearchFix.csproj -c Release
+
+      - name: Test
+        run: dotnet test Tests/SearchFix.Tests/SearchFix.Tests.csproj
+
+      # Restore the pre-authorized Steam config so SteamCMD can log in without
+      # interactive 2FA. See README for how to generate STEAM_CONFIG_VDF.
+      - name: Restore Steam config
+        run: |
+          mkdir -p $HOME/Steam/config
+          echo "${{ secrets.STEAM_CONFIG_VDF }}" | base64 -d > $HOME/Steam/config/config.vdf
+
+      - name: Install SteamCMD
+        run: |
+          sudo apt-get install -y lib32gcc-s1
+          mkdir -p $HOME/steamcmd
+          curl -sSL https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz \
+            | tar -xz -C $HOME/steamcmd
+
+      - name: Fill in workshop VDF
+        run: |
+          sed \
+            -e "s|CONTENT_FOLDER|$GITHUB_WORKSPACE|g" \
+            -e "s|CHANGE_NOTE|${{ github.event.inputs.change_note }}|g" \
+            About/workshop.vdf.template > /tmp/workshop.vdf
+
+      - name: Upload to Workshop
+        run: |
+          $HOME/steamcmd/steamcmd.sh \
+            +login "${{ secrets.STEAM_USERNAME }}" "${{ secrets.STEAM_PASSWORD }}" \
+            +workshop_build_item /tmp/workshop.vdf \
+            +quit

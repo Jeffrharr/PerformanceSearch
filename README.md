@@ -1,4 +1,4 @@
-# PerformanceSearch
+# Performance Search
 
 Targeted performance fixes for common GUI slowdowns in heavily modded RimWorld games.
 
@@ -14,8 +14,9 @@ See [About/About.xml](About/About.xml) for the current list of fixes.
 
 ```bash
 ./build.sh       # Linux / Mac
-./build.ps1      # Windows
 ```
+
+Windows build scripts are not yet implemented — see TODO.md.
 
 Output lands in `1.6/Assemblies/SearchFix.dll`, which is where RimWorld expects it.
 
@@ -46,7 +47,6 @@ The test suite uses `Mono.Cecil` to verify that the RimWorld types and methods t
 
 ```bash
 ./test.sh        # Linux / Mac
-./test.ps1       # Windows
 ```
 
 The tests inspect `Assembly-CSharp.dll` directly — no running game needed. They look for the DLL at the default Steam path automatically. If your install is elsewhere, set `RIMWORLD_ASSEMBLY`:
@@ -75,7 +75,8 @@ All changes go through a PR. Direct pushes to `master` are blocked.
 
 When adding a new performance fix:
 1. Create a branch from `master`
-2. Implement the patch in `Source/`
-3. Add API compatibility tests in `Tests/SearchFix.Tests/ApiCompatibilityTests.cs` for every type and method the patch targets
-4. Add a plain-language bullet to the `<description>` in `About/About.xml` describing the fix in terms a regular player would understand (see `CLAUDE.md` for the convention)
-5. Open a PR
+2. Implement the patch in `Source/` — prefer Prefix/Postfix over Transpilers
+3. Add a toggle in `Source/Settings.cs` so players can revert to vanilla behaviour
+4. Add API compatibility tests in `Tests/SearchFix.Tests/ApiCompatibilityTests.cs` for every type and method the patch targets
+5. Add a one-sentence plain-language bullet to `About/About.xml` (see `CLAUDE.md` for the convention)
+6. Open a PR
